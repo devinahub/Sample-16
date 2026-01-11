@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Bouquet for You 💐</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: #fffafa; /* Snow White */
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: crosshair;
+        }
+
+        .instruction {
+            position: absolute;
+            top: 20%;
+            text-align: center;
+            color: #8A2BE2;
+            z-index: 10;
+            pointer-events: none;
+            animation: fadeOut 4s forwards;
+        }
+
+        .flower {
+            position: absolute;
+            font-size: 40px;
+            user-select: none;
+            animation: bloom 0.5s ease-out;
+        }
+
+        @keyframes bloom {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            100% { transform: scale(1) rotate(20deg); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        #finalCard {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            z-index: 100;
+            text-align: center;
+            border: 2px solid #D4AF37;
+        }
+    </style>
+</head>
+<body onclick="addFlower(event)" ontouchstart="addFlower(event)">
+
+    <div class="instruction">
+        <h1>For You...</h1>
+        <p>(Tap the screen to grow your garden)</p>
+    </div>
+
+    <div id="finalCard">
+        <h2 style="color: #D4AF37;">A Bouquet That Never Wilts</h2>
+        <p>Just like my love for you. ❤️</p>
+        <button onclick="location.reload()" style="padding: 10px 20px; border: none; background: #E0B0FF; border-radius: 10px;">Grow Again</button>
+    </div>
+
+    <script>
+        let flowerCount = 0;
+        const flowers = ['🌹', '🌸', '🌷', '🌻', '🌺', '🌼'];
+
+        function addFlower(e) {
+            flowerCount++;
+            
+            // Get coordinates
+            const x = e.clientX || e.touches[0].clientX;
+            const y = e.clientY || e.touches[0].clientY;
+
+            // Create flower element
+            const flower = document.createElement('div');
+            flower.className = 'flower';
+            flower.style.left = (x - 20) + 'px';
+            flower.style.top = (y - 20) + 'px';
+            flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+            
+            document.body.appendChild(flower);
+
+            // Show final card after 15 flowers
+            if (flowerCount === 15) {
+                setTimeout(() => {
+                    document.getElementById('finalCard').style.display = 'block';
+                }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
