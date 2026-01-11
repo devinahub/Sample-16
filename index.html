@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A Bouquet for You 💐</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: #FFF0F5; /* Lavender Blush (Soft Pink) */
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            touch-action: none;
+        }
+
+        #instruction-layer {
+            position: absolute;
+            text-align: center;
+            color: #8A2BE2;
+            z-index: 5;
+            pointer-events: none;
+            transition: opacity 0.5s;
+        }
+
+        .flower {
+            position: absolute;
+            font-size: 50px; /* Larger flowers */
+            user-select: none;
+            z-index: 10;
+            animation: bloom 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+
+        @keyframes bloom {
+            0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        #finalCard {
+            display: none;
+            background: white;
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            z-index: 100;
+            text-align: center;
+            border: 3px solid #D4AF37;
+            width: 80%;
+            max-width: 300px;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .shimmer {
+            font-weight: bold;
+            background: linear-gradient(to right, #B8860B, #D4AF37, #B8860B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body onclick="addFlower(event)" ontouchstart="addFlower(event)">
+
+    <div id="instruction-layer">
+        <h1 style="font-size: 2rem;">For My Love...</h1>
+        <p>Tap the screen to grow a garden ✨</p>
+    </div>
+
+    <div id="finalCard">
+        <h2 class="shimmer">A Bouquet That Never Wilts</h2>
+        <p style="color: #444; line-height: 1.5;">Just like my love for you, these flowers will stay beautiful forever. ❤️</p>
+        <button onclick="location.reload()" style="margin-top:15px; padding: 12px 25px; border: none; background: #8A2BE2; color: white; border-radius: 50px; font-weight: bold;">Grow More</button>
+    </div>
+
+    <script>
+        let flowerCount = 0;
+        const flowers = ['🌹', '🌸', '🌷', '🌻', '🌺', '🌼', '💐', '💠'];
+
+        function addFlower(e) {
+            // Hide instruction on first tap
+            document.getElementById('instruction-layer').style.opacity = '0';
+            
+            flowerCount++;
+            
+            // Get coordinates for both Mouse and Touch
+            let x, y;
+            if (e.type === 'touchstart') {
+                x = e.touches[0].clientX;
+                y = e.touches[0].clientY;
+            } else {
+                x = e.clientX;
+                y = e.clientY;
+            }
+
+            // Create flower element
+            const flower = document.createElement('div');
+            flower.className = 'flower';
+            
+            // Randomly rotate flower slightly
+            const randomRotate = Math.floor(Math.random() * 40) - 20;
+            
+            flower.style.left = (x - 25) + 'px';
+            flower.style.top = (y - 25) + 'px';
+            flower.style.transform = `rotate(${randomRotate}deg)`;
+            
+            flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+            
+            document.body.appendChild(flower);
+
+            // Show final card after 10 flowers
+            if (flowerCount === 10) {
+                setTimeout(() => {
+                    document.getElementById('finalCard').style.display = 'block';
+                }, 800);
+            }
+        }
+    </script>
+</body>
+</html>
